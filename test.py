@@ -2,6 +2,7 @@ import shutil
 import unittest
 import os
 
+from DataSnapshot import DataSnapshot
 from ZipFile import ZipFile
 
 
@@ -39,6 +40,32 @@ class TestZipFile(unittest.TestCase):
         self.assertTrue(os.path.isdir(f"parcel_data\\{self.test_zip_file_name.split('.')[0]}"))
 
         shutil.rmtree(f"parcel_data\\{self.test_zip_file_name.split('.')[0]}")
+
+
+class TestDataSnapshot(unittest.TestCase):
+
+    test_dir_name = "test_dir"
+
+    @classmethod
+    def setUpClass(cls):
+        shutil.copytree(f"test_data\\{cls.test_dir_name}", f"parcel_data\\{cls.test_dir_name}")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(f"parcel_data\\{cls.test_dir_name}")
+
+    def test_contains_shp_data1(self):
+        snapshot = DataSnapshot(f"parcel_data\\{self.test_dir_name}")
+        self.assertFalse(snapshot.contains_shp_data)
+
+        first_shp_file = open(f"parcel_data\\{self.test_dir_name}\\file1.shp", "x")
+        first_shp_file.close()
+        self.assertTrue(snapshot.contains_shp_data)
+
+        second_shp_file = open(f"parcel_data\\{self.test_dir_name}\\file2.shp", "x")
+        second_shp_file.close()
+        with self.assertRaises(Exception):
+            snapshot.contains_shp_data
 
 
 if __name__ == '__main__':
