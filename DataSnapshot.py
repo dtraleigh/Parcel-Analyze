@@ -5,6 +5,7 @@ class DataSnapshot:
     def __init__(self, directory_path_and_name):
         self.directory_name = directory_path_and_name
         self.file_list = self.get_file_list
+        self.shp_file_name = ""
 
     def __repr__(self):
         return f"Snapshot files from {self.directory_name}"
@@ -32,4 +33,6 @@ class DataSnapshot:
 
     @property
     def get_shp_data_file(self):
-        pass
+        if self.contains_shp_data:
+            return [file for file in self.get_file_list if file.split(".")[-1] == "shp"][0]
+        return None
