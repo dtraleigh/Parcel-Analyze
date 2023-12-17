@@ -4,6 +4,7 @@ import os
 
 from DataSnapshot import DataSnapshot
 from ZipFile import ZipFile
+from functions import reorder_lists
 
 
 class TestZipFile(unittest.TestCase):
@@ -70,6 +71,36 @@ class TestDataSnapshot(unittest.TestCase):
         first_shp_file = open(f"parcel_data\\{self.test_dir_name}\\file1.shp", "x")
         first_shp_file.close()
         self.assertEqual(snapshot.get_shp_data_file, "file1.shp")
+
+
+class TestFunctions(unittest.TestCase):
+
+    def test_reorder_lists(self):
+        data_snapshots = [
+            DataSnapshot("test_snap1", True),
+            DataSnapshot("test_snap2", True),
+            DataSnapshot("test_snap3", True),
+        ]
+
+        data_snapshots[0].shp_col_name_list = ["Apple", "Bananas", "Cherries", "Durian"]
+        data_snapshots[1].shp_col_name_list = ["Apple", "Bananas", "Durian", "Endive"]
+        data_snapshots[2].shp_col_name_list = ["Bananas", "Durian", "Endive", "Yam"]
+
+        reorder_lists(data_snapshots)
+
+        actual = [
+            data_snapshots[0].shp_col_name_list_aligned_w_others,
+            data_snapshots[1].shp_col_name_list_aligned_w_others,
+            data_snapshots[2].shp_col_name_list_aligned_w_others
+        ]
+
+        expected = [
+            ["Apple", "Bananas", "Cherries", "Durian", "", ""],
+            ["Apple", "Bananas", "", "Durian", "Endive", ""],
+            ["", "Bananas", "", "Durian", "Endive", "Yam"]
+        ]
+
+        self.assertEqual(actual, expected)
 
 
 if __name__ == "__main__":
