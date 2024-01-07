@@ -1,5 +1,7 @@
 import os
 
+from functions import create_geojson_file_from_shp
+
 
 class DataSnapshot:
     def __init__(self, directory_path_and_name, is_test=False):
@@ -8,7 +10,7 @@ class DataSnapshot:
         self.shp_file_name = ""
         self.shp_col_name_list = []
         self.shp_col_name_list_aligned_w_others = []
-        self.geojson_data = {}
+        self.geojson_data_file_w_path = ""
 
     def __repr__(self):
         return f"Snapshot files from {self.directory_name}"
@@ -38,5 +40,12 @@ class DataSnapshot:
     @property
     def get_shp_data_file(self):
         if self.contains_shp_data:
-            return [file for file in self.get_file_list() if file.split(".")[-1] == "shp"][0]
+            self.shp_file_name = [file for file in self.get_file_list() if file.split(".")[-1] == "shp"][0]
+            return self.shp_file_name
         return None
+
+    def extract_geojson_from_shp(self):
+        if self.geojson_data_file_w_path == "":
+            self.geojson_data_file_w_path = create_geojson_file_from_shp(self)
+            return f"geojson file created at {self.geojson_data_file_w_path}."
+        return f"geojson file exists at {self.geojson_data_file_w_path}."

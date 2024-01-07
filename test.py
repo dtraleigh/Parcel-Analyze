@@ -102,6 +102,14 @@ class TestFunctions(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_create_geojson_file_from_shp(self):
+        expected_file = "geojson_files\\Raleigh_City_Council_Districts.geojson"
+
+        data1 = DataSnapshot("test_data")
+        data1.extract_geojson_from_shp()
+        self.assertTrue(os.path.isfile(expected_file))
+        os.remove(expected_file)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -49,3 +49,14 @@ def get_geojson_from_shp(data_snapshot):
         gdf = geopandas.read_file(path_to_shp_file)
         return gdf.to_json()
     raise Exception("path_to_shp_file is none.")
+
+
+def create_geojson_file_from_shp(data_snapshot):
+    path_to_shp_file = f"{data_snapshot.directory_name}\\{data_snapshot.get_shp_data_file}"
+    if path_to_shp_file:
+        print(f"Creating {path_to_shp_file} geojson file.")
+        gdf = geopandas.read_file(path_to_shp_file)
+        geojson_file_name = f"geojson_files\\{data_snapshot.get_shp_data_file[:-4]}.geojson"
+        gdf.to_file(geojson_file_name, driver="GeoJSON")
+        return geojson_file_name
+    raise Exception("path_to_shp_file is none.")
