@@ -40,3 +40,12 @@ def reorder_lists(data_snapshots):
 
     for lst, dts in zip(reordered_lists, data_snapshots):
         dts.shp_col_name_list_aligned_w_others = lst
+
+
+def get_geojson_from_shp(data_snapshot):
+    path_to_shp_file = f"{data_snapshot.directory_name}\\{data_snapshot.get_shp_data_file}"
+    if path_to_shp_file:
+        print(f"reading {path_to_shp_file} for column names.")
+        gdf = geopandas.read_file(path_to_shp_file)
+        return gdf.to_json()
+    raise Exception("path_to_shp_file is none.")

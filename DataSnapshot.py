@@ -8,6 +8,7 @@ class DataSnapshot:
         self.shp_file_name = ""
         self.shp_col_name_list = []
         self.shp_col_name_list_aligned_w_others = []
+        self.geojson_data = {}
 
     def __repr__(self):
         return f"Snapshot files from {self.directory_name}"
