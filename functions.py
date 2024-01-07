@@ -19,6 +19,7 @@ def get_parcel_data_dirs():
 def get_list_of_shp_col_names(data_snapshot, alpha_sorted=False):
     path_to_shp_file = f"{data_snapshot.directory_name}\\{data_snapshot.get_shp_data_file}"
     if path_to_shp_file:
+        print(f"reading {path_to_shp_file} for column names.")
         gdf = geopandas.read_file(path_to_shp_file)
         list_of_col_names = list(gdf)
         if alpha_sorted:
